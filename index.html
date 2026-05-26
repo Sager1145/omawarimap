@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Omawari Rail Map</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="toolbar">
+        <div class="brand">
+          <strong>Omawari Rail Map</strong>
+          <span>大回り路线可视化</span>
+        </div>
+        <div class="actions" aria-label="主操作">
+          <label class="file-button">
+            <input id="jsonInput" type="file" accept=".json,application/json">
+            导入 JSON
+          </label>
+          <label class="file-button">
+            <input id="pdfInput" type="file" accept=".pdf,application/pdf">
+            读取 PDF
+          </label>
+          <button id="loadSampleButton" type="button">示例</button>
+          <button id="showNodesButton" type="button">显示站点</button>
+          <button id="solveButton" type="button">下载 OSM 并求解</button>
+          <button id="exportGeojsonButton" type="button">导出 GeoJSON</button>
+          <button id="exportCsvButton" type="button">导出 CSV</button>
+          <button id="exportProjectButton" type="button">导出 Project</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="sidebar">
+          <section class="panel">
+            <div class="panel-heading">
+              <h1>行程</h1>
+              <span id="tripMeta">未加载</span>
+            </div>
+            <ol id="legList" class="leg-list"></ol>
+          </section>
+
+          <section class="panel json-panel">
+            <div class="panel-heading">
+              <h2>JSON 输入系统</h2>
+              <span id="jsonStatus">等待输入</span>
+            </div>
+            <div class="json-toolbar" aria-label="JSON 操作">
+              <button id="jsonValidateButton" type="button">校验</button>
+              <button id="jsonFormatButton" type="button">格式化</button>
+              <button id="jsonApplyButton" type="button">载入地图</button>
+              <button id="jsonTemplateButton" type="button">插入模板</button>
+            </div>
+            <textarea
+              id="jsonEditor"
+              class="code-editor"
+              spellcheck="false"
+              aria-label="行程 JSON 编辑器"
+            ></textarea>
+            <div id="jsonMessages" class="json-messages"></div>
+            <details class="schema-details">
+              <summary>查看 JSON 语言规则</summary>
+              <pre id="jsonSchemaView"></pre>
+            </details>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>PDF 草稿</h2>
+              <span id="pdfStatus">无</span>
+            </div>
+            <textarea
+              id="pdfTextPreview"
+              class="code-editor"
+              spellcheck="false"
+              placeholder="PDF 提取文本会显示在这里，可手动修改后点击“从文本生成行程”。"
+            ></textarea>
+            <button id="parseTextButton" type="button">从文本生成行程</button>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>诊断</h2>
+              <span id="statusBadge">Ready</span>
+            </div>
+            <div id="warnings" class="warnings"></div>
+            <pre id="debugOutput"></pre>
+          </section>
+        </aside>
+
+        <section class="map-pane">
+          <div id="map"></div>
+          <div class="attribution-note">
+            Map data © OpenStreetMap contributors. OpenStreetMap data is available under the Open Database License.
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script type="module" src="js/app.js?v=20260526-osm-station-match-4"></script>
+  </body>
+</html>
