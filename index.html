@@ -12,13 +12,76 @@
   </head>
   <body>
     <div class="app-shell">
-      <header class="topbar" aria-label="顶栏占位">
-        <div class="placeholder-title">Topbar placeholder</div>
+      <header class="topbar" aria-label="应用顶部栏">
+        <div class="brand">Omawari Map</div>
       </header>
 
       <main class="workspace">
-        <aside class="sidebar" aria-label="侧栏占位">
-          <div class="placeholder-title">Sidebar placeholder</div>
+        <aside class="sidebar" aria-label="地图控制">
+          <section class="control-panel" aria-labelledby="railway-panel-title">
+            <div>
+              <h1 id="railway-panel-title">铁路数据</h1>
+              <p class="panel-note">先按行程 JSON 解析站点，再根据站点解析对应线路。</p>
+            </div>
+
+            <dl class="bounds-list" aria-label="当前地图边界">
+              <div>
+                <dt>南</dt>
+                <dd id="bound-south">-</dd>
+              </div>
+              <div>
+                <dt>西</dt>
+                <dd id="bound-west">-</dd>
+              </div>
+              <div>
+                <dt>北</dt>
+                <dd id="bound-north">-</dd>
+              </div>
+              <div>
+                <dt>东</dt>
+                <dd id="bound-east">-</dd>
+              </div>
+            </dl>
+
+            <div class="button-row">
+              <button id="resolve-stations" type="button">解析点位</button>
+              <button id="resolve-route" type="button" disabled>解析路线</button>
+              <button id="clear-railway" class="secondary" type="button" disabled>清除</button>
+            </div>
+
+            <ul class="legend-list" aria-label="铁路数据颜色图例">
+              <li><span class="legend-swatch station"></span>车站节点</li>
+              <li><span class="legend-swatch stop"></span>停靠点节点</li>
+              <li><span class="legend-swatch node"></span>其他节点</li>
+              <li><span class="legend-line way"></span>way 线路</li>
+              <li><span class="legend-line relation"></span>relation 线路</li>
+            </ul>
+
+            <p id="railway-status" class="status" role="status">先解析行程 JSON 后可解析点位。</p>
+          </section>
+
+          <section class="control-panel itinerary-panel" aria-labelledby="itinerary-panel-title">
+            <div>
+              <h1 id="itinerary-panel-title">行程 JSON</h1>
+              <p class="panel-note">输入 itinerary 数组，后续用于站点解析和路线绘制。</p>
+            </div>
+
+            <label class="field-label" for="itinerary-json">JSON payload</label>
+            <textarea
+              id="itinerary-json"
+              spellcheck="false"
+              placeholder='{"itinerary":[{"route_id":"way1","rail_line":"..."}]}'
+            ></textarea>
+
+            <div class="button-row">
+              <button id="parse-itinerary" type="button">解析行程</button>
+              <button id="load-itinerary-example" class="secondary" type="button">示例</button>
+              <button id="clear-itinerary" class="secondary" type="button">清空</button>
+            </div>
+
+            <p id="itinerary-status" class="status" role="status">等待输入行程 JSON。</p>
+            <div id="itinerary-summary" class="itinerary-summary" aria-live="polite"></div>
+          </section>
         </aside>
 
         <section class="map-pane" aria-label="地图">

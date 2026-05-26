@@ -6,6 +6,9 @@
   --border: #d7dee6;
   --text: #1f2933;
   --muted: #6b7785;
+  --accent: #126f68;
+  --accent-dark: #0c554f;
+  --danger: #a33d2b;
   font-family: "Segoe UI", "Noto Sans SC", system-ui, sans-serif;
 }
 
@@ -43,6 +46,12 @@ body {
   background: var(--surface);
 }
 
+.brand {
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 700;
+}
+
 .workspace {
   min-width: 0;
   min-height: 0;
@@ -55,14 +64,344 @@ body {
   min-width: 0;
   min-height: 0;
   padding: 18px;
+  overflow-y: auto;
   border-right: 1px solid var(--border);
   background: var(--sidebar);
 }
 
-.placeholder-title {
+.control-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.control-panel + .control-panel {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.control-panel h1 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.panel-note {
+  margin: 0;
   color: var(--muted);
   font-size: 14px;
+  line-height: 1.45;
+}
+
+.bounds-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.bounds-list div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.bounds-list dt {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.bounds-list dd {
+  margin: 0;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.field-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--surface);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+textarea:focus {
+  border-color: var(--accent);
+  outline: 2px solid rgba(18, 111, 104, 0.16);
+}
+
+.legend-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.3;
+  list-style: none;
+}
+
+.legend-list li {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend-swatch,
+.legend-line {
+  flex: 0 0 auto;
+  display: inline-block;
+}
+
+.legend-swatch {
+  width: 11px;
+  height: 11px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.legend-line {
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.legend-swatch.station {
+  color: #7c3aed;
+}
+
+.legend-swatch.stop {
+  color: #0f8f5f;
+}
+
+.legend-swatch.node {
+  color: #475569;
+}
+
+.legend-line.way {
+  color: #c43828;
+}
+
+.legend-line.relation {
+  color: #8f3d96;
+}
+
+button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: #ffffff;
+  background: var(--accent);
+  font: inherit;
+  font-size: 14px;
   font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-dark);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+button.secondary {
+  color: var(--accent);
+  background: var(--surface);
+}
+
+button.secondary:hover:not(:disabled) {
+  color: #ffffff;
+  background: var(--accent);
+}
+
+.status {
+  min-height: 42px;
+  margin: 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--accent);
+  color: var(--text);
+  background: var(--surface);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.status.error {
+  border-left-color: var(--danger);
+}
+
+.itinerary-summary {
+  display: grid;
+  gap: 10px;
+}
+
+.itinerary-route {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.itinerary-route-title {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.itinerary-route-meta,
+.itinerary-route-path {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.itinerary-route-path {
+  color: var(--text);
+}
+
+.resolution-note {
+  margin: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  background: var(--surface);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.station-resolution-list {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.station-resolution {
+  display: grid;
+  gap: 3px;
+  padding-left: 10px;
+  border-left: 3px solid var(--border);
+}
+
+.station-resolution span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.station-resolution small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.station-resolution.matched {
+  border-left-color: #15803d;
+}
+
+.station-resolution.missing {
+  border-left-color: var(--danger);
+}
+
+.station-resolution.ambiguous {
+  border-left-color: #ca8a04;
+}
+
+.railway-popup {
+  display: grid;
+  gap: 8px;
+  min-width: 260px;
+  max-width: 520px;
+}
+
+.railway-popup-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.railway-popup-meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.railway-popup pre {
+  max-width: min(480px, 72vw);
+  max-height: 320px;
+  margin: 0;
+  padding: 10px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.journey-marker {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.35);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.journey-marker.start {
+  background: #15803d;
+}
+
+.journey-marker.end {
+  background: #2563eb;
+}
+
+.journey-marker.transfer {
+  background: #dc2626;
+}
+
+.journey-marker.passing {
+  width: 18px;
+  height: 18px;
+  background: #64748b;
+  font-size: 0;
 }
 
 .map-pane {

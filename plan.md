@@ -1,0 +1,31 @@
+# 已实现内容
+
+- 静态网页入口：`index.html` 已创建 Omawari Map 页面结构。
+- 基础应用布局：页面包含顶部栏、侧边栏和地图区域。
+- 响应式布局：窄屏下侧边栏会切换到地图上方。
+- Leaflet 地图集成：页面加载 Leaflet 1.9.4，并通过 `js/app.js` 初始化地图。
+- 地图渲染模块：`js/map_renderer.js` 提供 `createMap(elementId)` 方法。
+- OpenStreetMap 底图：地图使用 OpenStreetMap 瓦片服务，并保留版权 attribution。
+- 默认地图视图：地图初始中心设置为东京站附近，缩放级别为 12。
+- 地图尺寸适配：窗口 resize、首次渲染和容器尺寸变化时会调用 `invalidateSize`。
+- 基础样式：`css/style.css` 定义页面颜色、布局尺寸、边框、字体和地图全屏填充行为。
+- 铁路数据控制面板：侧边栏显示当前地图边界，并提供“解析点位”“解析路线”和“清除”操作。
+- 点位解析显示：`js/railway_data.js` 的“解析点位”只请求 itinerary `station_sequence` 中的 `railway=station` node，并将点位显示在地图上，同时触发站点解析结果刷新。
+- 路线解析显示：`js/railway_data.js` 的“解析路线”需要先完成点位解析，再根据已匹配站点附近 railway ways 以及 itinerary 的 `rail_line`、`operator` 查询路线数据。
+- 行程区间抽取：路线解析会把查询到的 railway LineString 构建为本地轨道图，并按 itinerary 的站点顺序抽取行程区间，地图上只显示这些行程区间。
+- 行程关键点标记：路线解析会用更大的实心标记显示全局起点 `S`、全局终点 `E` 和换乘点 `T1`、`T2`、`T3` 等。
+- 站点英文名支持：点位查询和站点匹配支持 `name`、`name:en`、`name:ja-Latn`、`official_name` 和 `alt_name` 等 OSM 名称字段，并对英文音标和 `Station` 后缀做宽容匹配。
+- Overpass API 查询：铁路数据通过 Overpass API 获取，查询条件来自 itinerary 和已解析点位，不再按整个地图屏幕范围获取。
+- 铁路数据地图展示：解析得到的 railway 点和线会绘制到当前 Leaflet 地图上，并可通过清除按钮移除。
+- 铁路数据分色显示：station 节点、停靠点节点、其他节点、way 线路和 relation 线路使用不同颜色显示，并在侧边栏提供图例。
+- 铁路数据完整弹窗：点击铁路数据要素时，弹窗会显示完整 GeoJSON feature 信息，包括 Overpass 原始 element/member 信息。
+- 行程 JSON 输入：侧边栏提供 itinerary JSON 输入框、示例加载、解析和清空操作。
+- 内置示例行程：示例按钮会载入 Tokyo -> Shinagawa -> Yokohama -> Motomachi-Chukagai 的三段行程，包含 Yamanote Line、Tokaido Main Line 和 Minatomirai Line。
+- 行程 schema 校验：`js/itinerary.js` 校验 `itinerary` 数组，以及每段 route 的 `route_id`、`rail_line`、`operator`、`start_station`、`arrive_station`、`start_time`、`arrive_time`、`platform_number` 和 `passing_stations` 字段。
+- 行程序列标准化：解析成功后会生成每段 route 的 `station_sequence`，顺序为 start station、passing stations、arrive station。
+- 行程摘要展示：解析成功后会在侧边栏显示每段 route 的线路、运营商、时间、站台和站点顺序。
+- 已解析铁路数据状态共享：`js/railway_data.js` 会在解析或清除 railway 数据时触发 `railway-data:change` 事件，并提供当前 GeoJSON 数据读取方法。
+- 站点解析：`js/itinerary.js` 会基于已解析的 railway GeoJSON，把 itinerary 站点解析到 OSM `railway=station` node。
+- 站点匹配规则：站点解析使用标准化后的 station name + operator 作为优先匹配键；若 operator 无完全匹配但存在同名站，会回退为同名候选并标记为 ambiguous。
+- 站点解析结果展示：行程摘要会显示每个站点的 matched、missing 或 ambiguous 状态，以及匹配到的 OSM node id。
+- 解析条件保护：未解析有效 itinerary 时禁用“解析点位”；未完成点位解析时禁用“解析路线”，避免无目标地获取屏幕范围或全量数据。
